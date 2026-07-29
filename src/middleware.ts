@@ -9,7 +9,8 @@ function nextWithLocale(request: NextRequest, locale: Locale) {
   });
 }
 
-export function proxy(request: NextRequest) {
+/** Edge Middleware — required by @opennextjs/cloudflare (proxy.ts / Node middleware unsupported). */
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
@@ -39,7 +40,7 @@ export function proxy(request: NextRequest) {
   const url = request.nextUrl.clone();
   url.pathname =
     pathname === "/" ? `/${defaultLocale}` : `/${defaultLocale}${pathname}`;
-  const response = NextResponse.rewrite(url, {
+  return NextResponse.rewrite(url, {
     request: {
       headers: (() => {
         const h = new Headers(request.headers);
@@ -48,7 +49,6 @@ export function proxy(request: NextRequest) {
       })(),
     },
   });
-  return response;
 }
 
 export const config = {
