@@ -1,26 +1,217 @@
 @import "tailwindcss";
 
+/*
+ * Hallmark · pre-emit critique: P4 H5 E4 S4 R5 V4
+ * Hallmark · macrostructure: Portfolio Grid · theme: cobalt · genre: modern-minimal
+ * fonts: Space Grotesk + JetBrains Mono · accent: electric cobalt
+ */
+
 :root {
-	--background: #ffffff;
-	--foreground: #171717;
+  --color-paper: oklch(98.5% 0.004 250);
+  --color-paper-2: oklch(96% 0.006 250);
+  --color-paper-3: oklch(93% 0.008 252);
+  --color-rule: oklch(88% 0.01 255);
+  --color-rule-strong: oklch(78% 0.014 256);
+  --color-neutral: oklch(52% 0.02 257);
+  --color-muted: oklch(40% 0.018 257);
+  --color-ink: oklch(24% 0.02 258);
+  --color-ink-soft: oklch(34% 0.018 257);
+  --color-accent: oklch(58% 0.2 256);
+  --color-accent-soft: oklch(58% 0.14 256);
+  --color-focus: oklch(55% 0.19 256);
+  --color-success: oklch(55% 0.14 155);
+  --color-error: oklch(55% 0.18 25);
+  --color-graphite: oklch(20% 0.016 260);
+  --color-graphite-ink: oklch(94% 0.006 250);
+
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --space-section: clamp(4.5rem, 10vw, 7.5rem);
+  --nav-h: 4rem;
 }
 
 @theme inline {
-	--color-background: var(--background);
-	--color-foreground: var(--foreground);
-	--font-sans: var(--font-geist-sans);
-	--font-mono: var(--font-geist-mono);
+  --color-paper: var(--color-paper);
+  --color-paper-2: var(--color-paper-2);
+  --color-paper-3: var(--color-paper-3);
+  --color-rule: var(--color-rule);
+  --color-rule-strong: var(--color-rule-strong);
+  --color-neutral: var(--color-neutral);
+  --color-muted: var(--color-muted);
+  --color-ink: var(--color-ink);
+  --color-ink-soft: var(--color-ink-soft);
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-focus: var(--color-focus);
+  --color-success: var(--color-success);
+  --color-error: var(--color-error);
+  --color-graphite: var(--color-graphite);
+  --color-graphite-ink: var(--color-graphite-ink);
+  --font-sans: var(--font-display);
+  --font-mono: var(--font-mono);
 }
 
 @media (prefers-color-scheme: dark) {
-	:root {
-		--background: #0a0a0a;
-		--foreground: #ededed;
-	}
+  :root {
+    --color-paper: oklch(14% 0.012 258);
+    --color-paper-2: oklch(17% 0.014 258);
+    --color-paper-3: oklch(21% 0.016 258);
+    --color-rule: oklch(28% 0.014 258);
+    --color-rule-strong: oklch(38% 0.016 258);
+    --color-neutral: oklch(62% 0.014 257);
+    --color-muted: oklch(72% 0.01 250);
+    --color-ink: oklch(94% 0.006 250);
+    --color-ink-soft: oklch(82% 0.01 252);
+    --color-accent: oklch(68% 0.17 256);
+    --color-accent-soft: oklch(62% 0.12 256);
+    --color-focus: oklch(70% 0.16 256);
+    --color-graphite: oklch(18% 0.016 260);
+    --color-graphite-ink: oklch(94% 0.006 250);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
-	background: var(--background);
-	color: var(--foreground);
-	font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in oklch, var(--color-accent) 28%, transparent);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-neutral);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease,
+    transform 120ms ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: oklch(98% 0.004 250);
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-soft);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-rule-strong);
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.link-accent {
+  color: var(--color-accent);
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0 1px;
+  transition: background-size 200ms ease;
+}
+
+.link-accent:hover {
+  background-size: 100% 1px;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 600ms ease-out,
+    transform 600ms ease-out;
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .btn,
+  .link-accent {
+    transition: none;
+  }
+}
+
+/* Atmospheric paper wash — not flat */
+.page-atmosphere {
+  background:
+    radial-gradient(
+      1200px 600px at 85% -10%,
+      color-mix(in oklch, var(--color-accent) 10%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 500px at -10% 30%,
+      color-mix(in oklch, var(--color-accent) 6%, transparent),
+      transparent 55%
+    ),
+    var(--color-paper);
+}
+
+.section-pad {
+  padding-block: var(--space-section);
+}
+
+.hairline {
+  border-color: var(--color-rule);
 }

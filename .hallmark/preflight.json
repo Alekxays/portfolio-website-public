@@ -1,0 +1,9 @@
+{
+  "scannedAt": "2026-07-29",
+  "framework": "Next.js 16 App Router + OpenNext Cloudflare",
+  "fonts": "Space Grotesk + JetBrains Mono (Hallmark Cobalt adapted)",
+  "palette": "Cobalt OKLCH tokens in src/app/globals.css",
+  "motion": "CSS reveal + IntersectionObserver (no framer-motion)",
+  "macrostructure": "Portfolio Grid",
+  "theme": "cobalt"
+}
