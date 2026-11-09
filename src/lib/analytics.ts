@@ -45,7 +45,7 @@ type GqlResponse = {
 };
 
 function envReady() {
-  return Boolean(process.env.CF_API_TOKEN && process.env.CF_ZONE_ID);
+  return Boolean(process.env.CF_ANALYTICS_API_TOKEN && process.env.CF_ZONE_ID);
 }
 
 export async function fetchAnalyticsSnapshot(
@@ -63,7 +63,7 @@ export async function fetchAnalyticsSnapshot(
       series: [],
       source: "unavailable",
         message:
-          "Configure CF_API_TOKEN and CF_ZONE_ID to load Cloudflare analytics.",
+          "Configure CF_ANALYTICS_API_TOKEN and CF_ZONE_ID to load Cloudflare analytics.",
     };
   }
 
@@ -146,7 +146,7 @@ export async function fetchAnalyticsSnapshot(
     const res = await fetch("https://api.cloudflare.com/client/v4/graphql", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.CF_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.CF_ANALYTICS_API_TOKEN}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

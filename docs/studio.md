@@ -18,7 +18,7 @@ Hidden admin surface at `/studio`.
    - For `next dev`, put it in **`.env.local`** (Next only loads `.env*`, not `.dev.vars`).
    - Keep the same value in **`.dev.vars`** for Wrangler / OpenNext preview.
 
-## D1 projects
+## D1 projects + applications
 
 ```bash
 npx wrangler d1 create portfolio-studio
@@ -28,15 +28,47 @@ npx wrangler d1 migrations apply portfolio-studio --remote
 npx wrangler types --env-interface CloudflareEnv env.d.ts
 ```
 
-On first read, an empty DB is seeded from `src/content/projects.ts`.
+On first read, an empty projects table is seeded from `src/content/projects.ts`.
+
+### Applications (alternance / jobs)
+
+Studio → **Applications** (`/studio/applications`): private pipeline over D1.
+
+| Field | Notes |
+| --- | --- |
+| company, role | required |
+| status | `todo` · `applied` · `interview` · `offer` · `rejected` · `ghosted` |
+| channel | `linkedin` · `website` · `email` · `referral` · `other` |
+| url, location | optional |
+| applied / follow-up / interview dates | optional (`YYYY-MM-DD`) |
+| notes | free text |
+
+API: `GET/POST/PUT/DELETE /api/studio/applications` (same Access / studio session as projects).
+
+### Profile + AI drafts (Workers AI)
+
+1. Fill **Studio → Profile** (`/studio/profile`) once: name, school, skills, experience, CV text.
+2. On an application: paste the job description, save, then use separate buttons:
+   - **Generate LM** — lettre de motivation
+   - **Generate Mail** / **Relance** — e-mail candidature or follow-up
+   - **Generate CV** — bullets / compétences adaptés à l’offre
+3. Optional checkbox **Quality model (70B)** for better prose (uses more Neurons).
+
+Binding in `wrangler.jsonc`: `"ai": { "binding": "AI" }`.  
+Default model: `@cf/meta/llama-3.1-8b-instruct-fp8` · quality: `@cf/meta/llama-3.3-70b-instruct-fp8-fast`.  
+Free allocation: 10 000 Neurons/day ([Workers AI pricing](https://developers.cloudflare.com/workers-ai/platform/pricing/)).
+
+APIs:
+- `GET/PUT /api/studio/profile`
+- `POST /api/studio/generate` `{ applicationId, kind: "lm"|"mail"|"cv", mailKind?, quality?, jobDescription? }`
 
 ## Analytics (Cloudflare GraphQL)
 
 Create an API token with permissions to read zone analytics / Account Analytics, then set:
 
-- `CF_API_TOKEN`
+- `CF_ANALYTICS_API_TOKEN` (not `CF_API_TOKEN` — that name is hijacked by Wrangler for CLI auth)
 - `CF_ZONE_ID`
-- `CF_ACCOUNT_ID` (optional, useful for account-scoped tokens)
+- `CF_ANALYTICS_ACCOUNT_ID` (optional)
 
 Studio Overview calls `httpRequestsAdaptiveGroups` (requests, visits, HTML page views, bandwidth, top paths, top countries).
 
