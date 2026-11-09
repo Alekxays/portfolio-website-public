@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { CvUploader } from "@/components/studio/CvUploader";
 import { emptyProfile, type StudioProfile } from "@/lib/profile";
 
 export function ProfileManager() {
@@ -57,6 +58,8 @@ export function ProfileManager() {
           key projects — the AI will not invent missing facts.
         </p>
       </div>
+
+      <CvUploader />
 
       <form
         onSubmit={onSubmit}

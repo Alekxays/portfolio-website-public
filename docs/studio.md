@@ -62,6 +62,33 @@ APIs:
 - `GET/PUT /api/studio/profile`
 - `POST /api/studio/generate` `{ applicationId, kind: "lm"|"mail"|"cv", mailKind?, quality?, jobDescription? }`
 
+### Public CV upload (Hero download)
+
+On **Profile**, upload FR / EN PDFs. They replace the static files for `/cv/fr` and `/cv/en` (Hero “Download CV”). Stored in KV (`CV_STORE`); metadata in D1 `cv_files`. Reset falls back to `public/files/…`.
+
+API: `GET/POST/DELETE /api/studio/cv`
+
+### Freshness reminders (email)
+
+Weekly cron (`0 9 * * 1` UTC) via custom worker `workers/app.ts`:
+
+- CV uploaded via Studio older than **6 months** → email reminder
+- No project create/update for **6 months** → email reminder
+- Cooldown **28 days** between identical reminders
+
+Requires Cloudflare **Email Sending** onboarded for `alexandreboissel.me`, binding `EMAIL`, and vars:
+
+- `STUDIO_REMINDER_TO` (default `hey@alexandreboissel.me`)
+- `STUDIO_REMINDER_FROM` (default `studio@alexandreboissel.me`)
+
+Enable sending (Dashboard → Email Service → Email Sending → onboard domain), or:
+
+```bash
+npx wrangler email sending enable alexandreboissel.me
+```
+
+(Your OAuth token needs Email Sending permissions; re-run `npx wrangler login` if you get Unauthorized.)
+
 ## Analytics (Cloudflare GraphQL)
 
 Create an API token with permissions to read zone analytics / Account Analytics, then set:

@@ -13,8 +13,8 @@ export const site = {
     linkedin: "https://www.linkedin.com/in/alexandreboissel/",
   },
   cv: {
-    fr: "/files/CV-Alexandre-BOISSEL-FR.pdf",
-    en: "/files/CV-Alexandre-BOISSEL-EN.pdf",
+    fr: "/cv/fr",
+    en: "/cv/en",
   },
   portrait: "/img/portrait.png",
   education: "Epitech",

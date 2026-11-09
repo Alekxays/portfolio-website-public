@@ -25,7 +25,9 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/_next") ||
     pathname.includes(".") ||
     pathname.startsWith("/files") ||
-    pathname.startsWith("/img")
+    pathname.startsWith("/img") ||
+    pathname === "/cv" ||
+    pathname.startsWith("/cv/")
   ) {
     return NextResponse.next();
   }
