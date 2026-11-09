@@ -23,6 +23,10 @@ const fr: Dictionary = {
     openMenu: "Ouvrir le menu",
     closeMenu: "Fermer le menu",
   },
+  theme: {
+    light: "Passer en mode clair",
+    dark: "Passer en mode sombre",
+  },
   hero: {
     eyebrow: "Portfolio · 2024 — 2026",
     brand: "Alexandre Boissel",
@@ -32,7 +36,7 @@ const fr: Dictionary = {
     scroll: "Défiler",
   },
   about: {
-    eyebrow: "01 — À propos",
+    eyebrow: "À propos",
     title: "À propos de moi",
     p1: "Bonjour ! Je suis Alexandre Boissel, un développeur passionné spécialisé dans la création de solutions web et mobiles modernes. Actuellement étudiant à Epitech, je perfectionne mes compétences en ingénierie logicielle et en innovation numérique. Mon ambition ? Concevoir et développer des expériences digitales percutantes qui répondent aux besoins des utilisateurs et vont au-delà de leurs attentes.",
     p2: "Au fil de mon parcours, j'ai travaillé sur des projets variés, allant de la création d'un site portfolio à Animeo, une application dédiée à la gestion de la santé animale. Mon expertise technique inclut des technologies comme React, Next.js, Tailwind CSS, Firebase, Docker et Python. Toujours curieux, j'aime relever de nouveaux défis et approfondir mes connaissances.",
@@ -41,7 +45,7 @@ const fr: Dictionary = {
     skillsLabel: "Stack",
   },
   projects: {
-    eyebrow: "02 — Projets",
+    eyebrow: "Projets",
     title: "Travaux sélectionnés",
     tagline: "Quatre projets · web et mobile · 2024 — 2025.",
     open: "Voir le projet",
@@ -60,7 +64,7 @@ const fr: Dictionary = {
     emptyImage: "Pas d'aperçu pour ce projet",
   },
   contact: {
-    eyebrow: "03 — Contact",
+    eyebrow: "Contact",
     title: "Contact",
     description:
       "Une idée, une opportunité, une question ? Écrivez-moi — je réponds rapidement.",

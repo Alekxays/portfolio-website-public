@@ -1,0 +1,12 @@
+# Local studio password (used only when CF Access is not configured)
+# Also add the same line to .env.local for `next dev`
+STUDIO_DEV_PASSWORD=change-me
+
+# Cloudflare Access (production) — leave empty in local next/wrangler unless testing Access
+# CF_ACCESS_TEAM_DOMAIN=https://your-team.cloudflareaccess.com
+# CF_ACCESS_AUD=your-application-aud-tag
+
+# Cloudflare GraphQL Analytics
+# CF_API_TOKEN=your-api-token
+# CF_ZONE_ID=your-zone-id
+# CF_ACCOUNT_ID=your-account-id (optional)

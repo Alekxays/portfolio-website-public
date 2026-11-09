@@ -52,44 +52,42 @@ export function Contact({ dict }: { dict: Dictionary }) {
   }
 
   const fieldClass =
-    "w-full rounded-[var(--radius-sm)] border border-[var(--color-rule-strong)] bg-[var(--color-paper)] px-3.5 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-neutral)] transition-colors focus:border-[var(--color-accent)] focus:outline-none";
+    "w-full border border-[var(--color-rule-strong)] bg-transparent px-3.5 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-neutral)] transition-colors focus:border-[var(--color-ink)] focus:outline-none";
 
   return (
     <section
       id="contact"
       aria-labelledby="contact-title"
-      className="section-pad border-t border-[var(--color-rule)] bg-[var(--color-graphite)] text-[var(--color-graphite-ink)]"
+      className="section-pad border-t border-[var(--color-rule)]"
     >
       <div className="mx-auto grid max-w-6xl gap-12 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <Reveal>
-          <p className="mb-4 font-[family-name:var(--font-mono)] text-[0.7rem] font-medium tracking-[0.08em] text-[color-mix(in_oklch,var(--color-graphite-ink)_55%,transparent)] uppercase">
-            {dict.contact.eyebrow}
-          </p>
+          <p className="eyebrow mb-4">{dict.contact.eyebrow}</p>
           <h2
             id="contact-title"
-            className="text-3xl font-semibold tracking-tight sm:text-4xl"
+            className="text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl"
           >
             {dict.contact.title}
           </h2>
-          <p className="mt-4 max-w-sm text-[color-mix(in_oklch,var(--color-graphite-ink)_78%,transparent)]">
+          <p className="mt-4 max-w-sm text-[var(--color-ink-soft)]">
             {dict.contact.description}
           </p>
           <div className="mt-8 space-y-3">
-            <p className="font-[family-name:var(--font-mono)] text-[0.7rem] tracking-[0.08em] uppercase opacity-60">
+            <p className="font-[family-name:var(--font-mono)] text-[0.7rem] tracking-[0.08em] text-[var(--color-neutral)] uppercase">
               {dict.contact.orEmail}
             </p>
             <a
               href={`mailto:${site.email}`}
-              className="inline-block text-lg text-[var(--color-accent)] hover:underline"
+              className="link-accent inline-block text-lg text-[var(--color-ink)]"
             >
               {site.email}
             </a>
-            <div className="flex gap-4 pt-2 font-[family-name:var(--font-mono)] text-sm">
+            <div className="flex gap-4 pt-2 font-[family-name:var(--font-mono)] text-sm text-[var(--color-neutral)]">
               <a
                 href={site.socials.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="opacity-80 hover:text-[var(--color-accent)] hover:opacity-100"
+                className="link-accent hover:text-[var(--color-ink)]"
               >
                 LinkedIn ↗
               </a>
@@ -97,7 +95,7 @@ export function Contact({ dict }: { dict: Dictionary }) {
                 href={site.socials.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="opacity-80 hover:text-[var(--color-accent)] hover:opacity-100"
+                className="link-accent hover:text-[var(--color-ink)]"
               >
                 GitHub ↗
               </a>
@@ -109,11 +107,11 @@ export function Contact({ dict }: { dict: Dictionary }) {
           <form
             ref={formRef}
             onSubmit={onSubmit}
-            className="space-y-4 rounded-[var(--radius-md)] border border-[color-mix(in_oklch,var(--color-graphite-ink)_12%,transparent)] bg-[color-mix(in_oklch,var(--color-paper)_6%,transparent)] p-5 sm:p-7"
+            className="space-y-4 border border-[var(--color-rule)] p-5 sm:p-7"
             noValidate
           >
             <div>
-              <label htmlFor="name" className="mb-2 block text-sm">
+              <label htmlFor="name" className="mb-2 block text-sm text-[var(--color-ink)]">
                 {dict.contact.name}
               </label>
               <input
@@ -128,7 +126,7 @@ export function Contact({ dict }: { dict: Dictionary }) {
               />
             </div>
             <div>
-              <label htmlFor="email" className="mb-2 block text-sm">
+              <label htmlFor="email" className="mb-2 block text-sm text-[var(--color-ink)]">
                 {dict.contact.email}
               </label>
               <input
@@ -143,7 +141,7 @@ export function Contact({ dict }: { dict: Dictionary }) {
               />
             </div>
             <div>
-              <label htmlFor="message" className="mb-2 block text-sm">
+              <label htmlFor="message" className="mb-2 block text-sm text-[var(--color-ink)]">
                 {dict.contact.message}
               </label>
               <textarea
@@ -152,7 +150,7 @@ export function Contact({ dict }: { dict: Dictionary }) {
                 required
                 rows={5}
                 placeholder={dict.contact.placeholders.message}
-                className={`${fieldClass} resize-y min-h-32`}
+                className={`${fieldClass} min-h-32 resize-y`}
                 disabled={status === "sending"}
               />
             </div>

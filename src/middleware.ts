@@ -9,17 +9,33 @@ function nextWithLocale(request: NextRequest, locale: Locale) {
   });
 }
 
+function isStudioPath(pathname: string) {
+  return pathname === "/studio" || pathname.startsWith("/studio/");
+}
+
+function isStudioApiPath(pathname: string) {
+  return pathname === "/api/studio" || pathname.startsWith("/api/studio/");
+}
+
 /** Edge Middleware — required by @opennextjs/cloudflare (proxy.ts / Node middleware unsupported). */
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
     pathname.startsWith("/_next") ||
-    pathname.startsWith("/api") ||
     pathname.includes(".") ||
     pathname.startsWith("/files") ||
     pathname.startsWith("/img")
   ) {
+    return NextResponse.next();
+  }
+
+  // Studio is outside the locale tree (hidden admin surface).
+  if (isStudioPath(pathname) || isStudioApiPath(pathname)) {
+    return NextResponse.next();
+  }
+
+  if (pathname.startsWith("/api")) {
     return NextResponse.next();
   }
 

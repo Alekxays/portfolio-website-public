@@ -3,6 +3,8 @@ import { headers } from "next/headers";
 import type { Metadata, Viewport } from "next";
 import { site } from "@/content/site";
 import { defaultLocale, isLocale } from "@/lib/i18n";
+import { themeInitScript } from "@/lib/theme";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -34,8 +36,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f8fb" },
-    { media: "(prefers-color-scheme: dark)", color: "#12141c" },
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#141414" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -51,8 +53,17 @@ export default async function RootLayout({
   const locale = isLocale(raw) ? raw : defaultLocale;
 
   return (
-    <html lang={locale} className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
-      <body className="page-atmosphere antialiased font-sans">{children}</body>
+    <html
+      lang={locale}
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body className="antialiased font-sans">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

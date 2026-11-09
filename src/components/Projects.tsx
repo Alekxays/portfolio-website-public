@@ -5,25 +5,27 @@ import Image from "next/image";
 import type { Dictionary } from "@/content/dictionaries/types";
 import type { Locale } from "@/lib/i18n";
 import {
-  projects,
   type Project,
   type ProjectLinkType,
   type ProjectStatus,
 } from "@/content/projects";
 import { Reveal } from "./Reveal";
 
-function statusTone(status: ProjectStatus): string {
-  if (status === "finished") return "text-[var(--color-success)]";
-  if (status === "paused") return "text-[var(--color-neutral)]";
-  return "text-[var(--color-accent)]";
+function statusLabel(
+  status: ProjectStatus,
+  dict: Dictionary,
+): string {
+  return dict.projects.status[status];
 }
 
 export function Projects({
   locale,
   dict,
+  projects,
 }: {
   locale: Locale;
   dict: Dictionary;
+  projects: Project[];
 }) {
   const [active, setActive] = useState<Project | null>(null);
   const years = Array.from(new Set(projects.map((p) => p.year))).sort(
@@ -41,7 +43,7 @@ export function Projects({
       className="section-pad border-t border-[var(--color-rule)]"
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <Reveal className="mb-10 flex flex-col gap-6 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
+        <Reveal className="mb-10 flex flex-col gap-6 sm:mb-14 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="eyebrow mb-4">{dict.projects.eyebrow}</p>
             <h2
@@ -56,17 +58,17 @@ export function Projects({
           </div>
 
           <div
-            className="flex flex-wrap gap-2"
+            className="flex flex-wrap gap-x-4 gap-y-2 border-b border-[var(--color-rule)] pb-2"
             role="group"
             aria-label={dict.projects.filterAll}
           >
-            <FilterChip
+            <FilterLink
               active={filter === "all"}
               onClick={() => setFilter("all")}
               label={dict.projects.filterAll}
             />
             {years.map((year) => (
-              <FilterChip
+              <FilterLink
                 key={year}
                 active={filter === year}
                 onClick={() => setFilter(year)}
@@ -76,51 +78,36 @@ export function Projects({
           </div>
         </Reveal>
 
-        <ul className="grid gap-4 sm:grid-cols-2">
+        <ul className="divide-y divide-[var(--color-rule)] border-y border-[var(--color-rule)]">
           {visible.map((project) => (
-            <Reveal as="li" key={project.id} className="min-w-0">
+            <li key={project.id}>
               <button
                 type="button"
                 onClick={() => setActive(project)}
-                className="group flex h-full w-full min-w-0 flex-col border border-[var(--color-rule)] bg-[var(--color-paper)] p-0 text-left transition-[border-color,background] hover:border-[var(--color-accent)] hover:bg-[var(--color-paper-2)] focus-visible:border-[var(--color-accent)]"
+                className="group grid w-full grid-cols-[4.5rem_1fr_auto] items-baseline gap-4 py-5 text-left transition-colors hover:bg-[var(--color-paper-2)] sm:grid-cols-[5.5rem_1fr_auto_auto] sm:gap-6 sm:py-6"
               >
-                <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-[var(--color-rule)] bg-[var(--color-paper-3)]">
-                  {project.image ? (
-                    <Image
-                      src={project.image}
-                      alt=""
-                      fill
-                      sizes="(max-width: 640px) 100vw, 50vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                    />
-                  ) : (
-                    <div className="flex h-full items-end p-5">
-                      <span className="font-[family-name:var(--font-mono)] text-[0.7rem] tracking-[0.08em] text-[var(--color-neutral)] uppercase">
-                        {project.year} · {project.skills[0]}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <div className="flex flex-1 flex-col gap-3 p-5">
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="text-lg font-semibold tracking-tight text-[var(--color-ink)]">
-                      {project.title}
-                    </h3>
-                    <span
-                      className={`shrink-0 font-[family-name:var(--font-mono)] text-[0.65rem] tracking-[0.08em] uppercase ${statusTone(project.status)}`}
-                    >
-                      {dict.projects.status[project.status]}
-                    </span>
-                  </div>
-                  <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
-                    {project.summary[locale]}
-                  </p>
-                  <span className="mt-auto pt-2 font-[family-name:var(--font-mono)] text-[0.7rem] tracking-[0.06em] text-[var(--color-accent)] uppercase">
-                    {dict.projects.open} →
+                <span className="font-[family-name:var(--font-mono)] text-[0.75rem] tracking-[0.06em] text-[var(--color-neutral)]">
+                  {project.year}
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-lg font-semibold tracking-tight text-[var(--color-ink)] sm:text-xl">
+                    {project.title}
                   </span>
-                </div>
+                  <span className="mt-1 block text-sm text-[var(--color-ink-soft)] sm:hidden">
+                    {project.summary[locale]}
+                  </span>
+                  <span className="mt-2 hidden font-[family-name:var(--font-mono)] text-[0.7rem] tracking-[0.04em] text-[var(--color-neutral)] sm:block">
+                    {project.skills.slice(0, 4).join(" · ")}
+                  </span>
+                </span>
+                <span className="hidden font-[family-name:var(--font-mono)] text-[0.7rem] tracking-[0.08em] text-[var(--color-neutral)] uppercase sm:inline">
+                  {statusLabel(project.status, dict)}
+                </span>
+                <span className="font-[family-name:var(--font-mono)] text-[0.7rem] tracking-[0.06em] text-[var(--color-ink)] uppercase transition-transform group-hover:translate-x-0.5">
+                  {dict.projects.open} →
+                </span>
               </button>
-            </Reveal>
+            </li>
           ))}
         </ul>
       </div>
@@ -137,7 +124,7 @@ export function Projects({
   );
 }
 
-function FilterChip({
+function FilterLink({
   active,
   onClick,
   label,
@@ -151,10 +138,10 @@ function FilterChip({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`rounded-[var(--radius-sm)] border px-3 py-1.5 font-[family-name:var(--font-mono)] text-[0.7rem] tracking-[0.06em] uppercase transition-colors ${
+      className={`font-[family-name:var(--font-mono)] text-[0.72rem] tracking-[0.08em] uppercase transition-colors ${
         active
-          ? "border-[var(--color-accent)] bg-[var(--color-accent)] text-[oklch(98%_0.004_250)]"
-          : "border-[var(--color-rule)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]"
+          ? "text-[var(--color-ink)]"
+          : "text-[var(--color-neutral)] hover:text-[var(--color-ink)]"
       }`}
     >
       {label}
@@ -195,7 +182,7 @@ function ProjectModal({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-end justify-center bg-[color-mix(in_oklch,var(--color-ink)_45%,transparent)] p-0 sm:items-center sm:p-6"
+      className="fixed inset-0 z-[60] flex items-end justify-center bg-[color-mix(in_oklch,var(--color-ink)_40%,transparent)] p-0 sm:items-center sm:p-6"
       role="presentation"
       onClick={onClose}
     >
@@ -205,7 +192,7 @@ function ProjectModal({
         aria-modal="true"
         aria-labelledby={titleId}
         tabIndex={-1}
-        className="max-h-[92svh] w-full max-w-2xl overflow-y-auto border border-[var(--color-rule)] bg-[var(--color-paper)] shadow-[0_1px_2px_color-mix(in_oklch,var(--color-ink)_12%,transparent)] outline-none sm:rounded-[var(--radius-md)]"
+        className="max-h-[92svh] w-full max-w-2xl overflow-y-auto border border-[var(--color-rule)] bg-[var(--color-paper)] outline-none"
         onClick={(e) => e.stopPropagation()}
       >
         {project.image ? (
@@ -215,7 +202,7 @@ function ProjectModal({
               alt=""
               fill
               sizes="672px"
-              className="object-cover"
+              className="object-cover grayscale"
             />
           </div>
         ) : null}
@@ -246,16 +233,9 @@ function ProjectModal({
             {project.pitch[locale]}
           </div>
 
-          <ul className="mt-6 flex flex-wrap gap-2">
-            {project.skills.map((skill) => (
-              <li
-                key={skill}
-                className="rounded-[var(--radius-sm)] border border-[var(--color-rule)] px-2.5 py-1 font-[family-name:var(--font-mono)] text-[0.7rem] text-[var(--color-ink-soft)]"
-              >
-                {skill}
-              </li>
-            ))}
-          </ul>
+          <p className="mt-6 font-[family-name:var(--font-mono)] text-[0.75rem] leading-6 tracking-[0.02em] text-[var(--color-neutral)]">
+            {project.skills.join(" · ")}
+          </p>
 
           {project.links.length > 0 ? (
             <ul className="mt-8 flex flex-wrap gap-3 border-t border-[var(--color-rule)] pt-6">

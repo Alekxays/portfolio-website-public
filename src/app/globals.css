@@ -1,34 +1,33 @@
 @import "tailwindcss";
 
 /*
- * Hallmark · pre-emit critique: P4 H5 E4 S4 R5 V4
- * Hallmark · macrostructure: Portfolio Grid · theme: cobalt · genre: modern-minimal
- * fonts: Space Grotesk + JetBrains Mono · accent: electric cobalt
+ * Monochrome editorial portfolio
+ * fonts: Space Grotesk + JetBrains Mono
  */
 
 :root {
-  --color-paper: oklch(98.5% 0.004 250);
-  --color-paper-2: oklch(96% 0.006 250);
-  --color-paper-3: oklch(93% 0.008 252);
-  --color-rule: oklch(88% 0.01 255);
-  --color-rule-strong: oklch(78% 0.014 256);
-  --color-neutral: oklch(52% 0.02 257);
-  --color-muted: oklch(40% 0.018 257);
-  --color-ink: oklch(24% 0.02 258);
-  --color-ink-soft: oklch(34% 0.018 257);
-  --color-accent: oklch(58% 0.2 256);
-  --color-accent-soft: oklch(58% 0.14 256);
-  --color-focus: oklch(55% 0.19 256);
-  --color-success: oklch(55% 0.14 155);
-  --color-error: oklch(55% 0.18 25);
-  --color-graphite: oklch(20% 0.016 260);
-  --color-graphite-ink: oklch(94% 0.006 250);
+  --color-paper: oklch(98.5% 0 0);
+  --color-paper-2: oklch(96% 0 0);
+  --color-paper-3: oklch(92% 0 0);
+  --color-rule: oklch(88% 0 0);
+  --color-rule-strong: oklch(72% 0 0);
+  --color-neutral: oklch(52% 0 0);
+  --color-muted: oklch(40% 0 0);
+  --color-ink: oklch(12% 0 0);
+  --color-ink-soft: oklch(32% 0 0);
+  --color-accent: oklch(12% 0 0);
+  --color-accent-soft: oklch(28% 0 0);
+  --color-focus: oklch(40% 0 0);
+  --color-success: oklch(42% 0 0);
+  --color-error: oklch(35% 0 0);
+  --color-scene: oklch(12% 0 0);
+  --color-scene-dim: oklch(12% 0 0 / 0.18);
 
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
   --space-section: clamp(4.5rem, 10vw, 7.5rem);
   --nav-h: 4rem;
 }
@@ -48,29 +47,27 @@
   --color-focus: var(--color-focus);
   --color-success: var(--color-success);
   --color-error: var(--color-error);
-  --color-graphite: var(--color-graphite);
-  --color-graphite-ink: var(--color-graphite-ink);
   --font-sans: var(--font-display);
   --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-paper: oklch(14% 0.012 258);
-    --color-paper-2: oklch(17% 0.014 258);
-    --color-paper-3: oklch(21% 0.016 258);
-    --color-rule: oklch(28% 0.014 258);
-    --color-rule-strong: oklch(38% 0.016 258);
-    --color-neutral: oklch(62% 0.014 257);
-    --color-muted: oklch(72% 0.01 250);
-    --color-ink: oklch(94% 0.006 250);
-    --color-ink-soft: oklch(82% 0.01 252);
-    --color-accent: oklch(68% 0.17 256);
-    --color-accent-soft: oklch(62% 0.12 256);
-    --color-focus: oklch(70% 0.16 256);
-    --color-graphite: oklch(18% 0.016 260);
-    --color-graphite-ink: oklch(94% 0.006 250);
-  }
+html.dark {
+  --color-paper: oklch(10% 0 0);
+  --color-paper-2: oklch(14% 0 0);
+  --color-paper-3: oklch(18% 0 0);
+  --color-rule: oklch(24% 0 0);
+  --color-rule-strong: oklch(38% 0 0);
+  --color-neutral: oklch(62% 0 0);
+  --color-muted: oklch(72% 0 0);
+  --color-ink: oklch(96% 0 0);
+  --color-ink-soft: oklch(78% 0 0);
+  --color-accent: oklch(96% 0 0);
+  --color-accent-soft: oklch(82% 0 0);
+  --color-focus: oklch(78% 0 0);
+  --color-success: oklch(78% 0 0);
+  --color-error: oklch(72% 0 0);
+  --color-scene: oklch(96% 0 0);
+  --color-scene-dim: oklch(96% 0 0 / 0.14);
 }
 
 html {
@@ -87,7 +84,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in oklch, var(--color-accent) 28%, transparent);
+  background: color-mix(in oklch, var(--color-ink) 18%, transparent);
   color: var(--color-ink);
 }
 
@@ -100,7 +97,7 @@ body {
   font-family: var(--font-mono);
   font-size: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-neutral);
 }
@@ -128,13 +125,14 @@ body {
 }
 
 .btn-primary {
-  background: var(--color-accent);
-  color: oklch(98% 0.004 250);
-  border: 1px solid transparent;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border: 1px solid var(--color-ink);
 }
 
 .btn-primary:hover {
-  background: var(--color-accent-soft);
+  background: transparent;
+  color: var(--color-ink);
 }
 
 .btn-ghost {
@@ -144,12 +142,13 @@ body {
 }
 
 .btn-ghost:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
 }
 
 .link-accent {
-  color: var(--color-accent);
+  color: inherit;
   text-decoration: none;
   background-image: linear-gradient(currentColor, currentColor);
   background-position: 0 100%;
@@ -164,10 +163,10 @@ body {
 
 .reveal {
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(12px);
   transition:
-    opacity 600ms ease-out,
-    transform 600ms ease-out;
+    opacity 700ms ease-out,
+    transform 700ms ease-out;
 }
 
 .reveal.is-in {
@@ -175,15 +174,75 @@ body {
   transform: none;
 }
 
+.hero-copy {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 700ms ease-out 180ms,
+    transform 700ms ease-out 180ms;
+}
+
+.hero-copy.is-ready {
+  opacity: 1;
+  transform: none;
+}
+
+.intro-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  background: var(--color-paper);
+  pointer-events: none;
+  transition: opacity 500ms ease;
+}
+
+.intro-veil.is-done {
+  opacity: 0;
+}
+
+.intro-mark {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  opacity: 0;
+  animation: intro-mark 900ms ease forwards;
+}
+
+@keyframes intro-mark {
+  0% {
+    opacity: 0;
+    letter-spacing: 0.4em;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.55;
+    letter-spacing: 0.22em;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  .reveal {
+  .reveal,
+  .hero-copy {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .intro-veil,
+  .intro-mark {
+    animation: none;
+    transition: none;
+    opacity: 0;
   }
 
   .btn,
@@ -192,26 +251,14 @@ body {
   }
 }
 
-/* Atmospheric paper wash — not flat */
-.page-atmosphere {
-  background:
-    radial-gradient(
-      1200px 600px at 85% -10%,
-      color-mix(in oklch, var(--color-accent) 10%, transparent),
-      transparent 60%
-    ),
-    radial-gradient(
-      900px 500px at -10% 30%,
-      color-mix(in oklch, var(--color-accent) 6%, transparent),
-      transparent 55%
-    ),
-    var(--color-paper);
-}
-
 .section-pad {
   padding-block: var(--space-section);
 }
 
 .hairline {
   border-color: var(--color-rule);
+}
+
+.portrait-mono {
+  filter: grayscale(1) contrast(1.05);
 }

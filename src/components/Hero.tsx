@@ -1,40 +1,59 @@
-import Image from "next/image";
+"use client";
+
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import type { Dictionary } from "@/content/dictionaries/types";
 import type { Locale } from "@/lib/i18n";
 import { localizedHref } from "@/lib/i18n";
 import { site } from "@/content/site";
-import { Reveal } from "./Reveal";
+import { Intro } from "./Intro";
+
+const HeroScene = dynamic(
+  () => import("./three/HeroScene").then((m) => m.HeroScene),
+  { ssr: false },
+);
 
 export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const seen = sessionStorage.getItem("portfolio-intro-seen") === "1";
+    const delay = reduced || seen ? 40 : 1180;
+    const id = window.setTimeout(() => setReady(true), delay);
+    return () => window.clearTimeout(id);
+  }, []);
+
   return (
     <section
       id="home"
       aria-labelledby="hero-brand"
-      className="relative flex min-h-[100svh] flex-col justify-end pb-16 pt-[calc(var(--nav-h)+2rem)] sm:justify-center sm:pb-24 sm:pt-[var(--nav-h)]"
+      className="relative flex min-h-[100svh] flex-col justify-end overflow-hidden pb-16 pt-[calc(var(--nav-h)+2rem)] sm:justify-center sm:pb-24 sm:pt-[var(--nav-h)]"
     >
+      <Intro />
+      <HeroScene />
+
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(180deg, transparent 40%, var(--color-paper) 100%), radial-gradient(ellipse 80% 60% at 70% 40%, color-mix(in oklch, var(--color-accent) 14%, transparent), transparent 70%)",
-        }}
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[var(--color-paper)] to-transparent"
       />
 
-      <div className="mx-auto grid w-full max-w-6xl gap-10 px-5 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end lg:gap-16">
-        <Reveal className="min-w-0">
-          <p className="eyebrow mb-5">{dict.hero.eyebrow}</p>
+      <div
+        className={`hero-copy relative mx-auto w-full max-w-6xl px-5 sm:px-8${ready ? " is-ready" : ""}`}
+      >
+        <div className="max-w-3xl">
+          <p className="eyebrow mb-6">{dict.hero.eyebrow}</p>
           <h1
             id="hero-brand"
-            className="max-w-[14ch] text-[clamp(2.75rem,8vw,5.25rem)] font-semibold leading-[0.95] tracking-[-0.03em] text-[var(--color-ink)]"
+            className="max-w-[12ch] text-[clamp(3rem,10vw,6.5rem)] font-semibold leading-[0.9] tracking-[-0.04em] text-[var(--color-ink)]"
             style={{ overflowWrap: "anywhere" }}
           >
             {dict.hero.brand}
           </h1>
-          <p className="mt-6 max-w-md text-base leading-relaxed text-[var(--color-ink-soft)] sm:text-lg">
+          <p className="mt-7 max-w-md text-base leading-relaxed text-[var(--color-ink-soft)] sm:text-lg">
             {dict.hero.lede}
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-9 flex flex-wrap gap-3">
             <a href={localizedHref(locale, "projects")} className="btn btn-primary">
               {dict.hero.ctaPrimary}
             </a>
@@ -48,11 +67,11 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               {dict.hero.ctaSecondary}
             </a>
           </div>
-          <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-2 font-[family-name:var(--font-mono)] text-[0.75rem] tracking-[0.04em] text-[var(--color-neutral)]">
+          <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 font-[family-name:var(--font-mono)] text-[0.75rem] tracking-[0.06em] text-[var(--color-neutral)]">
             <li>
               <a
                 href={site.socials.github}
-                className="link-accent hover:text-[var(--color-accent)]"
+                className="link-accent hover:text-[var(--color-ink)]"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -62,7 +81,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             <li>
               <a
                 href={site.socials.linkedin}
-                className="link-accent hover:text-[var(--color-accent)]"
+                className="link-accent hover:text-[var(--color-ink)]"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -72,41 +91,14 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
             <li>
               <a
                 href={`mailto:${site.email}`}
-                className="link-accent hover:text-[var(--color-accent)]"
+                className="link-accent hover:text-[var(--color-ink)]"
               >
                 {site.email}
               </a>
             </li>
           </ul>
-        </Reveal>
-
-        <Reveal className="relative mx-auto w-full max-w-sm lg:mx-0 lg:justify-self-end">
-          <figure className="relative mx-auto aspect-[4/5] w-full max-w-[380px]">
-            <Image
-              src={site.portrait}
-              alt={
-                locale === "en"
-                  ? "Portrait of Alexandre Boissel"
-                  : "Portrait d'Alexandre Boissel"
-              }
-              fill
-              priority
-              sizes="(max-width: 1024px) 80vw, 380px"
-              className="object-contain object-bottom"
-            />
-          </figure>
-        </Reveal>
+        </div>
       </div>
-
-      <a
-        href={localizedHref(locale, "about")}
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 font-[family-name:var(--font-mono)] text-[0.65rem] tracking-[0.12em] text-[var(--color-neutral)] sm:inline-flex"
-      >
-        {dict.hero.scroll}
-        <span aria-hidden className="ml-2 animate-bounce">
-          ↓
-        </span>
-      </a>
     </section>
   );
 }

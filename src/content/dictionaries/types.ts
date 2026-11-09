@@ -12,6 +12,10 @@ export interface Dictionary {
     openMenu: string;
     closeMenu: string;
   };
+  theme: {
+    light: string;
+    dark: string;
+  };
   hero: {
     eyebrow: string;
     brand: string;
