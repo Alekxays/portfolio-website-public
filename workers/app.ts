@@ -1,31 +1,28 @@
 /**
  * OpenNext only exports `fetch`. This custom entry adds `scheduled` for
  * Studio freshness reminders (see wrangler.jsonc triggers.crons).
+ *
+ * `.open-next/worker.js` is produced by `opennextjs-cloudflare build` after
+ * `next build`, so this file is excluded from the Next.js TS project and
+ * uses @ts-nocheck for the generated import.
  */
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore generated at build time
+// @ts-nocheck
 import { default as handler } from "../.open-next/worker.js";
 import { runStudioReminders } from "../src/lib/studio-reminders";
 
 export default {
   fetch: handler.fetch,
 
-  async scheduled(
-    _controller: ScheduledController,
-    env: CloudflareEnv,
-    ctx: ExecutionContext,
-  ) {
+  async scheduled(_controller, env, ctx) {
     ctx.waitUntil(
-      runStudioReminders(env).catch((error: unknown) => {
+      runStudioReminders(env).catch((error) => {
         console.error("[studio-reminders]", error);
       }),
     );
   },
-} satisfies ExportedHandler<CloudflareEnv>;
+};
 
 // Re-export OpenNext Durable Objects used by the adapter.
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore generated at build time
 export {
   DOQueueHandler,
   DOShardedTagCache,
