@@ -24,8 +24,15 @@ export function staticCvPath(locale: Locale | CvLocale) {
     : "/files/CV-Alexandre-BOISSEL-FR.pdf";
 }
 
-export function publicCvPath(locale: Locale | CvLocale) {
-  return `/cv/${locale}`;
+export function publicCvPath(
+  locale: Locale | CvLocale,
+  options?: { v?: string; download?: boolean },
+) {
+  const params = new URLSearchParams();
+  if (options?.v) params.set("v", options.v);
+  if (options?.download) params.set("download", "1");
+  const qs = params.toString();
+  return qs ? `/cv/${locale}?${qs}` : `/cv/${locale}`;
 }
 
 export function monthsBetween(fromIso: string, to = new Date()) {

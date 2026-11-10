@@ -58,7 +58,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               {dict.hero.ctaPrimary}
             </a>
             <a
-              href={site.cv[locale]}
+              href={`${site.cv[locale]}?download=1`}
               className="btn btn-ghost"
               download
               target="_blank"

@@ -21,6 +21,15 @@ export function ProjectsManager() {
   const [mode, setMode] = useState<"create" | "edit">("create");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [importing, setImporting] = useState(false);
+  const [githubUrl, setGithubUrl] = useState("");
+  const [qualityImport, setQualityImport] = useState(false);
+  const [manualImport, setManualImport] = useState(false);
+  const [manualReadme, setManualReadme] = useState("");
+  const [manualPackageJson, setManualPackageJson] = useState("");
+  const [manualDescription, setManualDescription] = useState("");
+  const [manualHomepage, setManualHomepage] = useState("");
+  const [manualLanguages, setManualLanguages] = useState("");
   const [message, setMessage] = useState<string | null>(null);
 
   const skillsText = useMemo(() => draft.skills.join(", "), [draft.skills]);
@@ -105,6 +114,73 @@ export function ProjectsManager() {
     await load();
   }
 
+  async function onImportGithub() {
+    const url = githubUrl.trim();
+    if (!url) {
+      setMessage("Paste a GitHub URL or owner/repo");
+      return;
+    }
+    if (
+      manualImport &&
+      !manualReadme.trim() &&
+      !manualPackageJson.trim() &&
+      !manualDescription.trim()
+    ) {
+      setMessage("Paste at least a README, package.json, or description");
+      return;
+    }
+
+    setImporting(true);
+    setMessage(null);
+
+    const res = await fetch("/api/studio/projects/import-github", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        url,
+        quality: qualityImport,
+        manual: manualImport,
+        ...(manualImport
+          ? {
+              readme: manualReadme,
+              packageJson: manualPackageJson,
+              description: manualDescription,
+              homepage: manualHomepage,
+              languages: manualLanguages,
+            }
+          : {}),
+      }),
+    });
+
+    setImporting(false);
+    if (!res.ok) {
+      const err = (await res.json().catch(() => null)) as { error?: string } | null;
+      setMessage(err?.error ?? "GitHub import failed");
+      return;
+    }
+
+    const data = (await res.json()) as {
+      project: Project;
+      model?: string;
+      mode?: "manual" | "api";
+      source?: { owner: string; repo: string };
+    };
+
+    setMode("create");
+    setDraft({
+      ...data.project,
+      image: data.project.image ?? "",
+    });
+    const via = data.mode === "manual" ? " (manual paste)" : "";
+    setMessage(
+      data.source
+        ? `Draft from ${data.source.owner}/${data.source.repo}${via}${
+            data.model ? ` · ${data.model}` : ""
+          } — review then Create`
+        : "Draft ready — review then Create",
+    );
+  }
+
   return (
     <section className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -115,6 +191,105 @@ export function ProjectsManager() {
         <button type="button" className="btn btn-ghost !min-h-10" onClick={startCreate}>
           New project
         </button>
+      </div>
+
+      <div className="space-y-3 border border-[var(--color-rule)] p-5 sm:p-6">
+        <h3 className="text-lg font-semibold tracking-tight">Import from GitHub</h3>
+        <p className="text-sm text-[var(--color-ink-soft)]">
+          Fetch README / languages / package.json, draft bilingual copy with Workers AI,
+          then validate before saving to D1. If the org blocks API tokens, paste files
+          locally instead.
+        </p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+          <label className="block min-w-0 flex-1 space-y-2">
+            <span className="font-[family-name:var(--font-mono)] text-[0.68rem] tracking-[0.08em] text-[var(--color-neutral)] uppercase">
+              Repo URL or owner/repo
+            </span>
+            <input
+              className={inputClass}
+              value={githubUrl}
+              placeholder="https://github.com/you/repo or you/repo"
+              onChange={(e) => setGithubUrl(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !manualImport) {
+                  e.preventDefault();
+                  void onImportGithub();
+                }
+              }}
+            />
+          </label>
+          <button
+            type="button"
+            className="btn btn-primary shrink-0"
+            disabled={importing}
+            onClick={() => void onImportGithub()}
+          >
+            {importing ? "Importing…" : "Import draft"}
+          </button>
+        </div>
+        <div className="flex flex-wrap gap-4">
+          <label className="flex items-center gap-2 text-sm text-[var(--color-ink-soft)]">
+            <input
+              type="checkbox"
+              checked={qualityImport}
+              onChange={(e) => setQualityImport(e.target.checked)}
+            />
+            Quality model (70B)
+          </label>
+          <label className="flex items-center gap-2 text-sm text-[var(--color-ink-soft)]">
+            <input
+              type="checkbox"
+              checked={manualImport}
+              onChange={(e) => setManualImport(e.target.checked)}
+            />
+            Manual paste (private / org-blocked)
+          </label>
+        </div>
+        {manualImport ? (
+          <div className="grid gap-4 border-t border-[var(--color-rule)] pt-4 lg:grid-cols-2">
+            <Field label="README (paste)">
+              <textarea
+                className={inputClass}
+                rows={10}
+                value={manualReadme}
+                placeholder="Paste README.md contents"
+                onChange={(e) => setManualReadme(e.target.value)}
+              />
+            </Field>
+            <Field label="package.json (paste, optional)">
+              <textarea
+                className={inputClass}
+                rows={10}
+                value={manualPackageJson}
+                placeholder='{ "name": "...", "dependencies": { ... } }'
+                onChange={(e) => setManualPackageJson(e.target.value)}
+              />
+            </Field>
+            <Field label="Short description (optional)">
+              <input
+                className={inputClass}
+                value={manualDescription}
+                onChange={(e) => setManualDescription(e.target.value)}
+              />
+            </Field>
+            <Field label="Homepage (optional)">
+              <input
+                className={inputClass}
+                value={manualHomepage}
+                placeholder="https://…"
+                onChange={(e) => setManualHomepage(e.target.value)}
+              />
+            </Field>
+            <Field label="Languages / stack (comma separated, optional)">
+              <input
+                className={inputClass}
+                value={manualLanguages}
+                placeholder="TypeScript, React, Next.js"
+                onChange={(e) => setManualLanguages(e.target.value)}
+              />
+            </Field>
+          </div>
+        ) : null}
       </div>
 
       {loading ? (

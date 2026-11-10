@@ -62,9 +62,23 @@ APIs:
 - `GET/PUT /api/studio/profile`
 - `POST /api/studio/generate` `{ applicationId, kind: "lm"|"mail"|"cv", mailKind?, quality?, jobDescription? }`
 
+### Import project from GitHub
+
+On **Studio → Projects**, paste a GitHub URL or `owner/repo`:
+
+1. Studio fetches repo metadata, languages, README, and `package.json` (public API; optional `GITHUB_TOKEN` for rate limits / private repos).
+2. Workers AI drafts title, year, status, skills, summary FR/EN, pitch FR/EN, and GitHub (+ homepage) links.
+3. Review the form, then **Create** to persist in D1 — nothing is saved until you confirm.
+
+If the org blocks tokens / the API returns private-not-found: enable **Manual paste**, still provide the URL for the GitHub link, and paste README / `package.json` / description from your local clone. AI draft runs the same way.
+
+Optional env / secret: `GITHUB_TOKEN` (also `npx wrangler secret put GITHUB_TOKEN`).
+
+API: `POST /api/studio/projects/import-github` `{ url, quality?, manual?, readme?, packageJson?, description?, homepage?, languages? }` → `{ project, model, mode, source }`
+
 ### Public CV upload (Hero download)
 
-On **Profile**, upload FR / EN PDFs. They replace the static files for `/cv/fr` and `/cv/en` (Hero “Download CV”). Stored in KV (`CV_STORE`); metadata in D1 `cv_files`. Reset falls back to `public/files/…`.
+On **Profile**, upload FR / EN PDFs. They replace the static files for `/cv/fr` and `/cv/en` (Hero “Download CV”). Stored in KV (`CV_STORE`) under a **versioned key** (avoids stale reads after overwrite); metadata in D1 `cv_files`. Preview uses `?v=<updatedAt>` and `Cache-Control: private, no-cache`. Reset falls back to `public/files/…`.
 
 API: `GET/POST/DELETE /api/studio/cv`
 

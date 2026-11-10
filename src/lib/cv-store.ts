@@ -12,6 +12,7 @@ type CvRow = {
   locale: string;
   filename: string;
   updated_at: string;
+  object_key: string | null;
 };
 
 async function getCvKv() {
@@ -22,10 +23,20 @@ async function getCvKv() {
   return env.CV_STORE;
 }
 
+function legacyCvKey(locale: CvLocale) {
+  return cvKvKey(locale);
+}
+
+function versionedCvKey(locale: CvLocale) {
+  return `${cvKvKey(locale)}:${Date.now()}`;
+}
+
 export async function listCvMeta(): Promise<CvMeta[]> {
   const db = await getDb();
   const { results } = await db
-    .prepare("SELECT locale, filename, updated_at FROM cv_files")
+    .prepare(
+      "SELECT locale, filename, updated_at, object_key FROM cv_files",
+    )
     .all<CvRow>();
   const byLocale = new Map(
     (results ?? []).map((row) => [row.locale as CvLocale, row]),
@@ -45,7 +56,9 @@ export async function listCvMeta(): Promise<CvMeta[]> {
 export async function getCvMeta(locale: CvLocale): Promise<CvMeta | null> {
   const db = await getDb();
   const row = await db
-    .prepare("SELECT locale, filename, updated_at FROM cv_files WHERE locale = ?")
+    .prepare(
+      "SELECT locale, filename, updated_at, object_key FROM cv_files WHERE locale = ?",
+    )
     .bind(locale)
     .first<CvRow>();
   if (!row) return null;
@@ -57,21 +70,41 @@ export async function getCvMeta(locale: CvLocale): Promise<CvMeta | null> {
   };
 }
 
+async function getCvRow(locale: CvLocale) {
+  const db = await getDb();
+  return db
+    .prepare(
+      "SELECT locale, filename, updated_at, object_key FROM cv_files WHERE locale = ?",
+    )
+    .bind(locale)
+    .first<CvRow>();
+}
+
 export async function getCvBytes(locale: CvLocale): Promise<{
   bytes: ArrayBuffer;
   filename: string;
+  updatedAt: string;
   source: "kv" | "static";
 } | null> {
   const kv = await getCvKv();
-  const stored = await kv.get(cvKvKey(locale), "arrayBuffer");
-  if (stored && stored.byteLength > 0) {
-    const meta = await getCvMeta(locale);
-    return {
-      bytes: stored,
-      filename: meta?.filename ?? `CV-${locale.toUpperCase()}.pdf`,
-      source: "kv",
-    };
+  const row = await getCvRow(locale);
+  const keys = [
+    row?.object_key,
+    legacyCvKey(locale),
+  ].filter((key): key is string => Boolean(key));
+
+  for (const key of keys) {
+    const stored = await kv.get(key, "arrayBuffer");
+    if (stored && stored.byteLength > 0) {
+      return {
+        bytes: stored,
+        filename: row?.filename ?? `CV-${locale.toUpperCase()}.pdf`,
+        updatedAt: row?.updated_at ?? "",
+        source: "kv",
+      };
+    }
   }
+
   return null;
 }
 
@@ -89,7 +122,11 @@ export async function saveCvUpload(options: {
 
   const kv = await getCvKv();
   const db = await getDb();
-  await kv.put(cvKvKey(options.locale), options.bytes, {
+  const previous = await getCvRow(options.locale);
+  const objectKey = versionedCvKey(options.locale);
+
+  // Versioned key avoids KV overwrite eventual-consistency serving the previous PDF.
+  await kv.put(objectKey, options.bytes, {
     metadata: {
       filename: options.filename,
       contentType: "application/pdf",
@@ -98,14 +135,24 @@ export async function saveCvUpload(options: {
 
   await db
     .prepare(
-      `INSERT INTO cv_files (locale, filename, updated_at)
-       VALUES (?, ?, datetime('now'))
+      `INSERT INTO cv_files (locale, filename, updated_at, object_key)
+       VALUES (?, ?, datetime('now'), ?)
        ON CONFLICT(locale) DO UPDATE SET
          filename = excluded.filename,
-         updated_at = datetime('now')`,
+         updated_at = datetime('now'),
+         object_key = excluded.object_key`,
     )
-    .bind(options.locale, options.filename)
+    .bind(options.locale, options.filename, objectKey)
     .run();
+
+  const staleKeys = new Set<string>();
+  if (previous?.object_key && previous.object_key !== objectKey) {
+    staleKeys.add(previous.object_key);
+  }
+  staleKeys.add(legacyCvKey(options.locale));
+  await Promise.all(
+    [...staleKeys].map((key) => kv.delete(key).catch(() => undefined)),
+  );
 
   return getCvMeta(options.locale);
 }
@@ -113,6 +160,12 @@ export async function saveCvUpload(options: {
 export async function deleteCvUpload(locale: CvLocale) {
   const kv = await getCvKv();
   const db = await getDb();
-  await kv.delete(cvKvKey(locale));
+  const previous = await getCvRow(locale);
+  const keys = [
+    previous?.object_key,
+    legacyCvKey(locale),
+  ].filter((key): key is string => Boolean(key));
+
+  await Promise.all(keys.map((key) => kv.delete(key).catch(() => undefined)));
   await db.prepare("DELETE FROM cv_files WHERE locale = ?").bind(locale).run();
 }

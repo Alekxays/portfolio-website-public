@@ -98,7 +98,9 @@ export function CvUploader() {
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   <a
-                    href={publicCvPath(file.locale)}
+                    href={publicCvPath(file.locale, {
+                      v: file.updatedAt || String(Date.now()),
+                    })}
                     className="btn btn-ghost !min-h-9 !px-3"
                     target="_blank"
                     rel="noreferrer"
