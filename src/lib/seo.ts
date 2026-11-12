@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { Locale } from "@/lib/i18n";
 import { defaultLocale } from "@/lib/i18n";
-import { site } from "@/content/site";
+import { site, skills } from "@/content/site";
 import type { Dictionary } from "@/content/dictionaries/types";
 
 export function localeUrl(locale: Locale, path = ""): string {
@@ -78,6 +78,17 @@ export function personJsonLd(locale: Locale, dict: Dictionary) {
         publisher: { "@id": `${site.url}/#person` },
       },
       {
+        "@type": "ProfilePage",
+        "@id": `${site.url}/#profilepage`,
+        url: localeUrl(locale),
+        name: dict.meta.title,
+        description: dict.meta.description,
+        inLanguage: locale,
+        isPartOf: { "@id": `${site.url}/#website` },
+        about: { "@id": `${site.url}/#person` },
+        mainEntity: { "@id": `${site.url}/#person` },
+      },
+      {
         "@type": "Person",
         "@id": `${site.url}/#person`,
         name: site.nameDisplay,
@@ -86,16 +97,19 @@ export function personJsonLd(locale: Locale, dict: Dictionary) {
         jobTitle: site.role[locale],
         image: `${site.url}${site.portrait}`,
         sameAs: [site.socials.github, site.socials.linkedin],
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Paris",
+          addressCountry: "FR",
+        },
         alumniOf: {
           "@type": "CollegeOrUniversity",
           name: site.education,
         },
         knowsAbout: [
           "Web development",
-          "React",
-          "Next.js",
-          "TypeScript",
           "Mobile development",
+          ...skills,
         ],
       },
     ],

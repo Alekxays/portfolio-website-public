@@ -5,6 +5,7 @@ import {
   formatBytes,
   type AnalyticsSnapshot,
 } from "@/lib/analytics";
+import { RankedBars, SeriesChart } from "./StatsCharts";
 
 export function StatsPanel() {
   const [days, setDays] = useState(7);
@@ -42,12 +43,17 @@ export function StatsPanel() {
             Cloudflare analytics
           </h2>
         </div>
-        <div className="flex gap-3 font-[family-name:var(--font-mono)] text-[0.72rem] tracking-[0.08em] uppercase">
+        <div
+          className="flex gap-3 font-[family-name:var(--font-mono)] text-[0.72rem] tracking-[0.08em] uppercase"
+          role="group"
+          aria-label="Analytics range"
+        >
           {[1, 7, 14, 30].map((value) => (
             <button
               key={value}
               type="button"
               onClick={() => setDays(value)}
+              aria-pressed={days === value}
               className={
                 days === value
                   ? "text-[var(--color-ink)]"
@@ -84,58 +90,26 @@ export function StatsPanel() {
             <StatCard label="Bandwidth" value={formatBytes(snapshot.bytes)} />
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-2">
-            <div>
-              <h3 className="mb-3 font-[family-name:var(--font-mono)] text-[0.7rem] tracking-[0.1em] text-[var(--color-neutral)] uppercase">
-                Top paths
-              </h3>
-              <ul className="divide-y divide-[var(--color-rule)] border-y border-[var(--color-rule)]">
-                {snapshot.topPaths.length === 0 ? (
-                  <li className="py-3 text-sm text-[var(--color-neutral)]">
-                    No data
-                  </li>
-                ) : (
-                  snapshot.topPaths.map((row) => (
-                    <li
-                      key={row.path}
-                      className="grid grid-cols-[1fr_auto] gap-4 py-3 text-sm"
-                    >
-                      <span className="truncate font-[family-name:var(--font-mono)] text-[0.8rem]">
-                        {row.path}
-                      </span>
-                      <span className="text-[var(--color-neutral)]">
-                        {row.requests.toLocaleString()}
-                      </span>
-                    </li>
-                  ))
-                )}
-              </ul>
-            </div>
+          <SeriesChart
+            series={snapshot.series}
+            label={`Traffic · last ${snapshot.rangeDays}d`}
+          />
 
-            <div>
-              <h3 className="mb-3 font-[family-name:var(--font-mono)] text-[0.7rem] tracking-[0.1em] text-[var(--color-neutral)] uppercase">
-                Top countries
-              </h3>
-              <ul className="divide-y divide-[var(--color-rule)] border-y border-[var(--color-rule)]">
-                {snapshot.topCountries.length === 0 ? (
-                  <li className="py-3 text-sm text-[var(--color-neutral)]">
-                    No data
-                  </li>
-                ) : (
-                  snapshot.topCountries.map((row) => (
-                    <li
-                      key={row.country}
-                      className="grid grid-cols-[1fr_auto] gap-4 py-3 text-sm"
-                    >
-                      <span>{row.country}</span>
-                      <span className="text-[var(--color-neutral)]">
-                        {row.requests.toLocaleString()}
-                      </span>
-                    </li>
-                  ))
-                )}
-              </ul>
-            </div>
+          <div className="grid gap-8 lg:grid-cols-2">
+            <RankedBars
+              label="Top paths"
+              rows={snapshot.topPaths.map((row) => ({
+                label: row.path,
+                value: row.requests,
+              }))}
+            />
+            <RankedBars
+              label="Top countries"
+              rows={snapshot.topCountries.map((row) => ({
+                label: row.country,
+                value: row.requests,
+              }))}
+            />
           </div>
         </>
       ) : null}

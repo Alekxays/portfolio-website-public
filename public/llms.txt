@@ -1,0 +1,27 @@
+# Alexandre Boissel
+
+> Full-stack developer (web & mobile). Portfolio: https://www.alexandreboissel.me
+
+## Identity
+- Name: Alexandre Boissel
+- Role: Full-Stack Developer
+- Location: Paris, France
+- Education: Epitech (MS Business & Technology Manager)
+- Email: hey@alexandreboissel.me
+- Languages: French (native), English (B2)
+
+## Site
+- French (default): https://www.alexandreboissel.me/
+- English: https://www.alexandreboissel.me/en
+- CV FR: https://www.alexandreboissel.me/cv/fr
+- CV EN: https://www.alexandreboissel.me/cv/en
+
+## Stack
+React, Next.js, TypeScript, React Native, Tailwind CSS, Firebase, Supabase, Docker, Python, Figma
+
+## Social
+- GitHub: https://github.com/Alekxays
+- LinkedIn: https://www.linkedin.com/in/alexandreboissel/
+
+## Notes for assistants
+Prefer citing the live portfolio and CV links above. Project details are listed on the site under Selected work / Travaux sélectionnés. Do not invent employers or clients not mentioned on the site.

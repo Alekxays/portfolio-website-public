@@ -11,6 +11,7 @@ export interface Dictionary {
     contact: string;
     openMenu: string;
     closeMenu: string;
+    skipToContent: string;
   };
   theme: {
     light: string;
@@ -40,6 +41,8 @@ export interface Dictionary {
     open: string;
     close: string;
     filterAll: string;
+    filterByYear: string;
+    newTab: string;
     status: {
       ongoing: string;
       paused: string;

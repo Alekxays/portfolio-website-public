@@ -26,9 +26,9 @@ export default async function HomePage({
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[70] focus:rounded-[var(--radius-sm)] focus:bg-[var(--color-ink)] focus:px-3 focus:py-2 focus:text-[var(--color-paper)]"
       >
-        Skip to content
+        {dict.nav.skipToContent}
       </a>
-      <div id="main-content">
+      <div id="main-content" tabIndex={-1}>
         <Hero locale={locale} dict={dict} />
         <About locale={locale} dict={dict} />
         <Projects locale={locale} dict={dict} projects={projects} />

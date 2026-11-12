@@ -22,6 +22,7 @@ const en: Dictionary = {
     contact: "Contact",
     openMenu: "Open menu",
     closeMenu: "Close menu",
+    skipToContent: "Skip to content",
   },
   theme: {
     light: "Switch to light mode",
@@ -47,10 +48,12 @@ const en: Dictionary = {
   projects: {
     eyebrow: "Projects",
     title: "Selected work",
-    tagline: "Four projects · web and mobile · 2024 - 2025.",
+    tagline: "Selected work · web and mobile · 2024 - 2026.",
     open: "View project",
     close: "Close",
     filterAll: "All",
+    filterByYear: "Filter by year",
+    newTab: "opens in a new tab",
     status: {
       ongoing: "Ongoing",
       paused: "Paused",

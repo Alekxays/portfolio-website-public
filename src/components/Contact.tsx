@@ -52,7 +52,7 @@ export function Contact({ dict }: { dict: Dictionary }) {
   }
 
   const fieldClass =
-    "w-full border border-[var(--color-rule-strong)] bg-transparent px-3.5 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-neutral)] transition-colors focus:border-[var(--color-ink)] focus:outline-none";
+    "w-full border border-[var(--color-rule-strong)] bg-transparent px-3.5 py-3 text-[var(--color-ink)] placeholder:text-[var(--color-neutral)] transition-colors focus:border-[var(--color-ink)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]";
 
   return (
     <section
@@ -90,6 +90,7 @@ export function Contact({ dict }: { dict: Dictionary }) {
                 className="link-accent hover:text-[var(--color-ink)]"
               >
                 LinkedIn ↗
+                <span className="sr-only"> ({dict.projects.newTab})</span>
               </a>
               <a
                 href={site.socials.github}
@@ -98,6 +99,7 @@ export function Contact({ dict }: { dict: Dictionary }) {
                 className="link-accent hover:text-[var(--color-ink)]"
               >
                 GitHub ↗
+                <span className="sr-only"> ({dict.projects.newTab})</span>
               </a>
             </div>
           </div>

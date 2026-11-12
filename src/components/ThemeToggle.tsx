@@ -9,16 +9,18 @@ export function ThemeToggle({
 }) {
   const { theme, toggleTheme } = useTheme();
   const next = theme === "dark" ? "light" : "dark";
+  const label = next === "dark" ? labels.dark : labels.light;
+  const visible = next === "dark" ? "Dark" : "Light";
 
   return (
     <button
       type="button"
       onClick={toggleTheme}
       className="rounded-[var(--radius-sm)] border border-[var(--color-rule-strong)] px-2.5 py-1 font-[family-name:var(--font-mono)] text-[0.7rem] tracking-[0.08em] text-[var(--color-ink-soft)] uppercase transition-colors hover:border-[var(--color-ink)] hover:text-[var(--color-ink)]"
-      aria-label={next === "dark" ? labels.dark : labels.light}
-      title={next === "dark" ? labels.dark : labels.light}
+      aria-label={label}
+      title={label}
     >
-      {theme === "dark" ? "Light" : "Dark"}
+      <span aria-hidden>{visible}</span>
     </button>
   );
 }

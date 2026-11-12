@@ -65,6 +65,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
               rel="noopener noreferrer"
             >
               {dict.hero.ctaSecondary}
+              <span className="sr-only"> ({dict.projects.newTab})</span>
             </a>
           </div>
           <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 font-[family-name:var(--font-mono)] text-[0.75rem] tracking-[0.06em] text-[var(--color-neutral)]">
@@ -76,6 +77,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 rel="noopener noreferrer"
               >
                 GitHub
+                <span className="sr-only"> ({dict.projects.newTab})</span>
               </a>
             </li>
             <li>
@@ -86,6 +88,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
                 rel="noopener noreferrer"
               >
                 LinkedIn
+                <span className="sr-only"> ({dict.projects.newTab})</span>
               </a>
             </li>
             <li>

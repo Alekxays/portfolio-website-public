@@ -11,10 +11,7 @@ import {
 } from "@/content/projects";
 import { Reveal } from "./Reveal";
 
-function statusLabel(
-  status: ProjectStatus,
-  dict: Dictionary,
-): string {
+function statusLabel(status: ProjectStatus, dict: Dictionary): string {
   return dict.projects.status[status];
 }
 
@@ -28,6 +25,7 @@ export function Projects({
   projects: Project[];
 }) {
   const [active, setActive] = useState<Project | null>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
   const years = Array.from(new Set(projects.map((p) => p.year))).sort(
     (a, b) => Number(b) - Number(a),
   );
@@ -35,6 +33,19 @@ export function Projects({
 
   const visible =
     filter === "all" ? projects : projects.filter((p) => p.year === filter);
+
+  function openProject(project: Project, opener: HTMLElement) {
+    openerRef.current = opener;
+    setActive(project);
+  }
+
+  function closeProject() {
+    setActive(null);
+    queueMicrotask(() => {
+      openerRef.current?.focus();
+      openerRef.current = null;
+    });
+  }
 
   return (
     <section
@@ -60,7 +71,7 @@ export function Projects({
           <div
             className="flex flex-wrap gap-x-4 gap-y-2 border-b border-[var(--color-rule)] pb-2"
             role="group"
-            aria-label={dict.projects.filterAll}
+            aria-label={dict.projects.filterByYear}
           >
             <FilterLink
               active={filter === "all"}
@@ -83,7 +94,7 @@ export function Projects({
             <li key={project.id}>
               <button
                 type="button"
-                onClick={() => setActive(project)}
+                onClick={(e) => openProject(project, e.currentTarget)}
                 className="group grid w-full grid-cols-[4.5rem_1fr_auto] items-baseline gap-4 py-5 text-left transition-colors hover:bg-[var(--color-paper-2)] sm:grid-cols-[5.5rem_1fr_auto_auto] sm:gap-6 sm:py-6"
               >
                 <span className="font-[family-name:var(--font-mono)] text-[0.75rem] tracking-[0.06em] text-[var(--color-neutral)]">
@@ -117,7 +128,7 @@ export function Projects({
           project={active}
           locale={locale}
           dict={dict}
-          onClose={() => setActive(null)}
+          onClose={closeProject}
         />
       ) : null}
     </section>
@@ -162,15 +173,38 @@ function ProjectModal({
 }) {
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    dialogRef.current?.focus();
+    closeRef.current?.focus();
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
     window.addEventListener("keydown", onKey);
     return () => {
       document.body.style.overflow = prev;
@@ -191,7 +225,6 @@ function ProjectModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        tabIndex={-1}
         className="max-h-[92svh] w-full max-w-2xl overflow-y-auto border border-[var(--color-rule)] bg-[var(--color-paper)] outline-none"
         onClick={(e) => e.stopPropagation()}
       >
@@ -199,7 +232,7 @@ function ProjectModal({
           <div className="relative aspect-[16/9] w-full border-b border-[var(--color-rule)] bg-[var(--color-paper-3)]">
             <Image
               src={project.image}
-              alt=""
+              alt={`${project.title} — preview`}
               fill
               sizes="672px"
               className="object-cover grayscale"
@@ -221,6 +254,7 @@ function ProjectModal({
               </h3>
             </div>
             <button
+              ref={closeRef}
               type="button"
               onClick={onClose}
               className="btn btn-ghost shrink-0 !min-h-10 !px-3"
@@ -248,6 +282,7 @@ function ProjectModal({
                     className="btn btn-ghost !min-h-10"
                   >
                     {linkLabel(link.type)} ↗
+                    <span className="sr-only"> ({dict.projects.newTab})</span>
                   </a>
                 </li>
               ))}

@@ -22,6 +22,7 @@ const fr: Dictionary = {
     contact: "Contact",
     openMenu: "Ouvrir le menu",
     closeMenu: "Fermer le menu",
+    skipToContent: "Aller au contenu",
   },
   theme: {
     light: "Passer en mode clair",
@@ -47,10 +48,12 @@ const fr: Dictionary = {
   projects: {
     eyebrow: "Projets",
     title: "Travaux sélectionnés",
-    tagline: "Quatre projets · web et mobile · 2024 - 2025.",
+    tagline: "Sélection · web et mobile · 2024 - 2026.",
     open: "Voir le projet",
     close: "Fermer",
     filterAll: "Tous",
+    filterByYear: "Filtrer par année",
+    newTab: "ouvre un nouvel onglet",
     status: {
       ongoing: "En cours",
       paused: "En pause",

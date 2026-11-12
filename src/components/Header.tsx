@@ -53,6 +53,15 @@ export function Header({
     };
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   const navItems = [
     { id: "about" as const, label: dict.nav.about },
     { id: "projects" as const, label: dict.nav.projects },
@@ -72,6 +81,7 @@ export function Header({
         <a
           href={localizedHref(locale)}
           onClick={onBrandClick}
+          aria-label={`${site.name} — ${dict.nav.home}`}
           className="font-[family-name:var(--font-display)] text-[0.95rem] font-semibold tracking-tight text-[var(--color-ink)]"
         >
           {site.name}
@@ -133,7 +143,7 @@ export function Header({
         >
           <nav
             className="mx-auto flex max-w-6xl flex-col gap-1 px-5 py-4"
-            aria-label="Mobile"
+            aria-label={locale === "fr" ? "Navigation mobile" : "Mobile"}
           >
             {navItems.map((item) => (
               <a
