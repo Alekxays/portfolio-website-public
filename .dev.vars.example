@@ -2,16 +2,16 @@
 # Also add the same line to .env.local for `next dev`
 STUDIO_DEV_PASSWORD=change-me
 
-# Cloudflare Access (production) — leave empty in local next/wrangler unless testing Access
+# Cloudflare Access (production) - leave empty in local next/wrangler unless testing Access
 # CF_ACCESS_TEAM_DOMAIN=https://your-team.cloudflareaccess.com
 # CF_ACCESS_AUD=your-application-aud-tag
 
 # Cloudflare GraphQL Analytics (Studio Overview)
-# Do NOT name this CF_API_TOKEN — Wrangler treats that as deploy auth.
+# Do NOT name this CF_API_TOKEN - Wrangler treats that as deploy auth.
 # CF_ANALYTICS_API_TOKEN=your-analytics-api-token
 # CF_ZONE_ID=your-zone-id
 # CF_ANALYTICS_ACCOUNT_ID=your-account-id (optional)
 
-# Optional — higher GitHub API rate limits + private repos (Studio project import)
+# Optional - higher GitHub API rate limits + private repos (Studio project import)
 # Also: npx wrangler secret put GITHUB_TOKEN
 # GITHUB_TOKEN=ghp_xxxxxxxx

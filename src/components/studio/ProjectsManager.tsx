@@ -176,8 +176,8 @@ export function ProjectsManager() {
       data.source
         ? `Draft from ${data.source.owner}/${data.source.repo}${via}${
             data.model ? ` · ${data.model}` : ""
-          } — review then Create`
-        : "Draft ready — review then Create",
+          } - review then Create`
+        : "Draft ready - review then Create",
     );
   }
 
@@ -457,7 +457,7 @@ export function ProjectsManager() {
           </Field>
         </div>
 
-        <Field label="Links (one per line: type|url — github, figma, website)">
+        <Field label="Links (one per line: type|url - github, figma, website)">
           <textarea
             className={inputClass}
             rows={3}

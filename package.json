@@ -1,6 +1,6 @@
 {
   "name": "portfolio-website-public",
-  "description": "Portfolio d'Alexandre Boissel — Next.js on Cloudflare Workers.",
+  "description": "Portfolio d'Alexandre Boissel - Next.js on Cloudflare Workers.",
   "cloudflare": {
     "label": "Next.js Framework Starter",
     "products": [

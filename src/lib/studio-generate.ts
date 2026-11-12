@@ -29,7 +29,7 @@ function offerBlock(application: Application, jobDescription: string) {
     application.notes ? `Notes perso: ${application.notes}` : "",
     jobDescription
       ? `Description / annonce:\n${jobDescription}`
-      : "Description: (non fournie — reste généraliste mais crédible)",
+      : "Description: (non fournie - reste généraliste mais crédible)",
   ]
     .filter(Boolean)
     .join("\n");

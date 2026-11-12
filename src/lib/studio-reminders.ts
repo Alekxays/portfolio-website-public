@@ -68,18 +68,18 @@ export async function runStudioReminders(env: CloudflareEnv) {
     await env.EMAIL.send({
       to,
       from: fromAddress,
-      subject: `Rappel CV — pas mis à jour depuis ${age}+ mois`,
+      subject: `Rappel CV - pas mis à jour depuis ${age}+ mois`,
       text: [
         `Ton CV public n'a pas été mis à jour depuis environ ${age} mois.`,
         "",
         "Mets-le à jour dans Studio → Profile / CV :",
         "https://alexandreboissel.me/studio/profile",
         "",
-        "— Studio",
+        "- Studio",
       ].join("\n"),
       html: `<p>Ton CV public n'a pas été mis à jour depuis environ <strong>${age} mois</strong>.</p>
 <p><a href="https://alexandreboissel.me/studio/profile">Mettre à jour le CV dans Studio</a></p>
-<p>— Studio</p>`,
+<p>- Studio</p>`,
     });
     await db
       .prepare(
@@ -104,7 +104,7 @@ export async function runStudioReminders(env: CloudflareEnv) {
     await env.EMAIL.send({
       to,
       from: fromAddress,
-      subject: `Rappel projets — rien de neuf depuis ${age}+ mois`,
+      subject: `Rappel projets - rien de neuf depuis ${age}+ mois`,
       text: [
         projectUpdated === null
           ? "Aucun projet n'est présent / daté dans Studio."
@@ -113,7 +113,7 @@ export async function runStudioReminders(env: CloudflareEnv) {
         "Ajoute ou mets à jour un projet :",
         "https://alexandreboissel.me/studio/projects",
         "",
-        "— Studio",
+        "- Studio",
       ].join("\n"),
       html: `<p>${
         projectUpdated === null
@@ -121,7 +121,7 @@ export async function runStudioReminders(env: CloudflareEnv) {
           : `Aucun projet n'a été ajouté ou mis à jour depuis environ <strong>${age} mois</strong>.`
       }</p>
 <p><a href="https://alexandreboissel.me/studio/projects">Ouvrir Studio → Projects</a></p>
-<p>— Studio</p>`,
+<p>- Studio</p>`,
     });
     await db
       .prepare(

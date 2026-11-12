@@ -17,7 +17,7 @@ function isStudioApiPath(pathname: string) {
   return pathname === "/api/studio" || pathname.startsWith("/api/studio/");
 }
 
-/** Edge Middleware — required by @opennextjs/cloudflare (proxy.ts / Node middleware unsupported). */
+/** Edge Middleware - required by @opennextjs/cloudflare (proxy.ts / Node middleware unsupported). */
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 

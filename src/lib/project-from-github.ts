@@ -155,12 +155,12 @@ Règles:
       fr: String(
         parsed?.pitch?.fr ??
           snapshot.description ??
-          `Projet ${title} — dépôt GitHub ${snapshot.owner}/${snapshot.repo}.`,
+          `Projet ${title} - dépôt GitHub ${snapshot.owner}/${snapshot.repo}.`,
       ).trim(),
       en: String(
         parsed?.pitch?.en ??
           snapshot.description ??
-          `Project ${title} — GitHub repository ${snapshot.owner}/${snapshot.repo}.`,
+          `Project ${title} - GitHub repository ${snapshot.owner}/${snapshot.repo}.`,
       ).trim(),
     },
     links: buildLinks(snapshot),

@@ -2,7 +2,7 @@ import type { Dictionary } from "./types";
 
 const fr: Dictionary = {
   meta: {
-    title: "Alexandre BOISSEL — Développeur Full-Stack | Portfolio",
+    title: "Alexandre BOISSEL - Développeur Full-Stack | Portfolio",
     description:
       "Portfolio d'Alexandre Boissel, développeur full-stack spécialisé dans les applications web et mobiles modernes. React, Next.js, TypeScript.",
     keywords: [
@@ -28,9 +28,9 @@ const fr: Dictionary = {
     dark: "Passer en mode sombre",
   },
   hero: {
-    eyebrow: "Portfolio · 2024 — 2026",
+    eyebrow: "Portfolio · 2024 - 2026",
     brand: "Alexandre Boissel",
-    lede: "Développeur Full-Stack. Passionné de tech et de design — je conçois des expériences digitales utiles et soignées.",
+    lede: "Développeur Full-Stack. Passionné de tech et de design - je conçois des expériences digitales utiles et soignées.",
     ctaPrimary: "Voir les projets",
     ctaSecondary: "Télécharger le CV",
     scroll: "Défiler",
@@ -47,7 +47,7 @@ const fr: Dictionary = {
   projects: {
     eyebrow: "Projets",
     title: "Travaux sélectionnés",
-    tagline: "Quatre projets · web et mobile · 2024 — 2025.",
+    tagline: "Quatre projets · web et mobile · 2024 - 2025.",
     open: "Voir le projet",
     close: "Fermer",
     filterAll: "Tous",
@@ -67,7 +67,7 @@ const fr: Dictionary = {
     eyebrow: "Contact",
     title: "Contact",
     description:
-      "Une idée, une opportunité, une question ? Écrivez-moi — je réponds rapidement.",
+      "Une idée, une opportunité, une question ? Écrivez-moi - je réponds rapidement.",
     name: "Nom",
     email: "E-mail",
     message: "Message",

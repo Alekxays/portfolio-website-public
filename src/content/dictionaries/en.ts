@@ -2,7 +2,7 @@ import type { Dictionary } from "./types";
 
 const en: Dictionary = {
   meta: {
-    title: "Alexandre BOISSEL — Full-Stack Developer | Portfolio",
+    title: "Alexandre BOISSEL - Full-Stack Developer | Portfolio",
     description:
       "Portfolio of Alexandre Boissel, a full-stack developer building modern web and mobile applications. React, Next.js, TypeScript.",
     keywords: [
@@ -28,9 +28,9 @@ const en: Dictionary = {
     dark: "Switch to dark mode",
   },
   hero: {
-    eyebrow: "Portfolio · 2024 — 2026",
+    eyebrow: "Portfolio · 2024 - 2026",
     brand: "Alexandre Boissel",
-    lede: "Full-Stack developer. Passionate about tech and design — I build useful, carefully crafted digital experiences.",
+    lede: "Full-Stack developer. Passionate about tech and design - I build useful, carefully crafted digital experiences.",
     ctaPrimary: "View projects",
     ctaSecondary: "Download CV",
     scroll: "Scroll",
@@ -47,7 +47,7 @@ const en: Dictionary = {
   projects: {
     eyebrow: "Projects",
     title: "Selected work",
-    tagline: "Four projects · web and mobile · 2024 — 2025.",
+    tagline: "Four projects · web and mobile · 2024 - 2025.",
     open: "View project",
     close: "Close",
     filterAll: "All",
@@ -67,7 +67,7 @@ const en: Dictionary = {
     eyebrow: "Contact",
     title: "Contact",
     description:
-      "An idea, an opportunity, a question? Write to me — I reply quickly.",
+      "An idea, an opportunity, a question? Write to me - I reply quickly.",
     name: "Name",
     email: "Email",
     message: "Message",

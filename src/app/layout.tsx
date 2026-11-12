@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "Alexandre BOISSEL — Portfolio",
+    default: "Alexandre BOISSEL - Portfolio",
     template: "%s",
   },
   applicationName: site.nameDisplay,

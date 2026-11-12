@@ -41,7 +41,7 @@ export function ProfileManager() {
     }
     const data = (await res.json()) as { profile: StudioProfile };
     setProfile(data.profile);
-    setMessage("Profile saved — used for LM / Mail / CV generation");
+    setMessage("Profile saved - used for LM / Mail / CV generation");
   }
 
   if (loading) {
@@ -55,7 +55,7 @@ export function ProfileManager() {
         <h2 className="text-2xl font-semibold tracking-tight">Profile</h2>
         <p className="mt-2 max-w-2xl text-sm text-[var(--color-ink-soft)]">
           Filled once, reused for every application draft. Paste your CV text and
-          key projects — the AI will not invent missing facts.
+          key projects - the AI will not invent missing facts.
         </p>
       </div>
 

@@ -3,7 +3,7 @@ import { site } from "@/content/site";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `${site.nameDisplay} — Portfolio`,
+    name: `${site.nameDisplay} - Portfolio`,
     short_name: site.name,
     description:
       "Portfolio d'Alexandre Boissel, développeur full-stack.",

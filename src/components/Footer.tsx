@@ -32,7 +32,7 @@ export function Footer({ dict }: { dict: Dictionary }) {
             {site.email}
           </a>
           <span>
-            © {year} {site.name} — {dict.footer.rights}
+            © {year} {site.name} - {dict.footer.rights}
           </span>
         </div>
       </div>

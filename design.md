@@ -1,4 +1,4 @@
-# Design system — Alexandre Boissel portfolio
+# Design system - Alexandre Boissel portfolio
 
 ## Hallmark
 - Genre: modern-minimal
@@ -26,5 +26,5 @@
 
 ## Deviations from Cobalt canonical
 - No ⌘K palette (personal site, not a product)
-- No code-demo hero — brand name + portrait as hero signal
+- No code-demo hero - brand name + portrait as hero signal
 - Body font: Space Grotesk (not Inter)

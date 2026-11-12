@@ -194,7 +194,7 @@ export async function fetchGithubRepoSnapshot(
     throw new Error("Repository not found (private repos need GITHUB_TOKEN)");
   }
   if (repoRes.status === 403) {
-    throw new Error("GitHub API rate limit or forbidden — set GITHUB_TOKEN");
+    throw new Error("GitHub API rate limit or forbidden - set GITHUB_TOKEN");
   }
   if (!repoRes.ok) {
     throw new Error(`GitHub repo fetch failed (${repoRes.status})`);

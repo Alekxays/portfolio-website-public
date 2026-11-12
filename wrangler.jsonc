@@ -43,7 +43,7 @@
 		}
 	],
 	"triggers": {
-		// Weekly Monday 09:00 UTC — CV / projects freshness reminders
+		// Weekly Monday 09:00 UTC - CV / projects freshness reminders
 		"crons": ["0 9 * * 1"]
 	},
 	"vars": {

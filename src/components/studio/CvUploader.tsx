@@ -44,7 +44,7 @@ export function CvUploader() {
       setMessage(err?.error ?? "Upload failed");
       return;
     }
-    setMessage(`CV ${locale.toUpperCase()} updated — public download uses this file`);
+    setMessage(`CV ${locale.toUpperCase()} updated - public download uses this file`);
     await load();
   }
 

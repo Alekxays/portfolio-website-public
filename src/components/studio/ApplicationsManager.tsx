@@ -318,7 +318,7 @@ export function ApplicationsManager() {
                     onClick={() =>
                       void onDelete(
                         application.id,
-                        `${application.company} — ${application.role}`,
+                        `${application.company} - ${application.role}`,
                       )
                     }
                   >
@@ -481,7 +481,7 @@ export function ApplicationsManager() {
                   AI drafts
                 </p>
                 <p className="mt-1 text-sm text-[var(--color-ink-soft)]">
-                  Separate buttons — one generation at a time. Fill{" "}
+                  Separate buttons - one generation at a time. Fill{" "}
                   <a href="/studio/profile" className="underline underline-offset-2">
                     Profile
                   </a>{" "}

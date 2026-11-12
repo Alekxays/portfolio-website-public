@@ -4,17 +4,17 @@ Hidden admin surface at `/studio`.
 
 ## Access combo
 
-1. **Easter egg** — click the brand name in the header **7 times** within ~3s → navigates to `/studio`.
-2. **Cloudflare Access** (recommended in production) — protect `https://your-domain/studio*` in Zero Trust:
+1. **Easter egg** - click the brand name in the header **7 times** within ~3s → navigates to `/studio`.
+2. **Cloudflare Access** (recommended in production) - protect `https://your-domain/studio*` in Zero Trust:
    - Cloudflare One → Access → Applications → Add self-hosted app
    - Application domain: your portfolio hostname
    - Path: `/studio*`
    - Policy: allow your email / IdP group
    - Copy **Application Audience (AUD)** and team domain
-3. **Origin verification** — set secrets so the app re-validates the Access JWT:
+3. **Origin verification** - set secrets so the app re-validates the Access JWT:
    - `CF_ACCESS_TEAM_DOMAIN=https://<team>.cloudflareaccess.com`
    - `CF_ACCESS_AUD=<aud tag>`
-4. **Local fallback** — if Access vars are unset, `/studio/login` accepts `STUDIO_DEV_PASSWORD`.
+4. **Local fallback** - if Access vars are unset, `/studio/login` accepts `STUDIO_DEV_PASSWORD`.
    - For `next dev`, put it in **`.env.local`** (Next only loads `.env*`, not `.dev.vars`).
    - Keep the same value in **`.dev.vars`** for Wrangler / OpenNext preview.
 
@@ -49,9 +49,9 @@ API: `GET/POST/PUT/DELETE /api/studio/applications` (same Access / studio sessio
 
 1. Fill **Studio → Profile** (`/studio/profile`) once: name, school, skills, experience, CV text.
 2. On an application: paste the job description, save, then use separate buttons:
-   - **Generate LM** — lettre de motivation
-   - **Generate Mail** / **Relance** — e-mail candidature or follow-up
-   - **Generate CV** — bullets / compétences adaptés à l’offre
+   - **Generate LM** - lettre de motivation
+   - **Generate Mail** / **Relance** - e-mail candidature or follow-up
+   - **Generate CV** - bullets / compétences adaptés à l’offre
 3. Optional checkbox **Quality model (70B)** for better prose (uses more Neurons).
 
 Binding in `wrangler.jsonc`: `"ai": { "binding": "AI" }`.  
@@ -68,7 +68,7 @@ On **Studio → Projects**, paste a GitHub URL or `owner/repo`:
 
 1. Studio fetches repo metadata, languages, README, and `package.json` (public API; optional `GITHUB_TOKEN` for rate limits / private repos).
 2. Workers AI drafts title, year, status, skills, summary FR/EN, pitch FR/EN, and GitHub (+ homepage) links.
-3. Review the form, then **Create** to persist in D1 — nothing is saved until you confirm.
+3. Review the form, then **Create** to persist in D1 - nothing is saved until you confirm.
 
 If the org blocks tokens / the API returns private-not-found: enable **Manual paste**, still provide the URL for the GitHub link, and paste README / `package.json` / description from your local clone. AI draft runs the same way.
 
@@ -107,7 +107,7 @@ npx wrangler email sending enable alexandreboissel.me
 
 Create an API token with permissions to read zone analytics / Account Analytics, then set:
 
-- `CF_ANALYTICS_API_TOKEN` (not `CF_API_TOKEN` — that name is hijacked by Wrangler for CLI auth)
+- `CF_ANALYTICS_API_TOKEN` (not `CF_API_TOKEN` - that name is hijacked by Wrangler for CLI auth)
 - `CF_ZONE_ID`
 - `CF_ANALYTICS_ACCOUNT_ID` (optional)
 
