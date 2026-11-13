@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" fill="#141414"/>
+  <!-- Isometric wireframe cube -->
+  <g stroke="#f5f5f5" stroke-width="1.25" stroke-linejoin="round" stroke-linecap="round">
+    <!-- top face -->
+    <path d="M16 7 L24 11.5 L16 16 L8 11.5 Z"/>
+    <!-- left face -->
+    <path d="M8 11.5 L16 16 L16 25 L8 20.5 Z"/>
+    <!-- right face -->
+    <path d="M24 11.5 L16 16 L16 25 L24 20.5 Z"/>
+  </g>
+</svg>

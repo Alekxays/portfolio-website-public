@@ -128,9 +128,10 @@ export function ApplicationsManager() {
     setSaving(true);
     setMessage(null);
 
+    const isCreate = mode === "create" || !draft.id.trim();
     const payload = {
       ...draft,
-      id: draft.id.trim(),
+      id: isCreate ? undefined : draft.id.trim(),
       company: draft.company.trim(),
       role: draft.role.trim(),
       url: draft.url?.trim() || undefined,
@@ -141,7 +142,7 @@ export function ApplicationsManager() {
     };
 
     const res = await fetch("/api/studio/applications", {
-      method: mode === "create" ? "POST" : "PUT",
+      method: isCreate ? "POST" : "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
@@ -154,13 +155,9 @@ export function ApplicationsManager() {
     }
 
     const data = (await res.json()) as { application: Application };
-    setMessage(mode === "create" ? "Application created" : "Application updated");
+    setMessage(isCreate ? "Application created" : "Application updated");
     await load();
-    if (mode === "create") {
-      startEdit(data.application);
-    } else {
-      startEdit(data.application);
-    }
+    startEdit(data.application);
   }
 
   async function onDelete(id: string, label: string) {

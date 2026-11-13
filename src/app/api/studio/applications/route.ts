@@ -34,8 +34,9 @@ function normalizeApplication(
     ? input.channel
     : "website";
 
+  const rawId = String(input.id ?? fallbackId ?? "").trim();
   return {
-    id: String(input.id ?? fallbackId ?? newApplicationId()).trim(),
+    id: rawId || newApplicationId(),
     company,
     role,
     status,
